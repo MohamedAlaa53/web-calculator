@@ -64,6 +64,8 @@ window.onload = () => {
     var num1;
     var num2;
     var operation;
+    var display=false;
+    var equality=false;
     //defining items
     let buttons=[];
     let rows=[];
@@ -127,6 +129,14 @@ window.onload = () => {
     }
     for (let number of numbers){
         number.addEventListener("click",()=>{
+            if (display){
+                input.setAttribute("value",'');
+                display=false;
+            }
+            if (equality && operation==undefined){
+                num1=undefined;
+                equality=false;
+            }
             interact(input,number.innerHTML);
         });
     }
@@ -134,6 +144,14 @@ window.onload = () => {
         let key=event.key;
         let valueOnscreen=input.getAttribute("value");
         if(arr.indexOf(key)>=0){
+            if (display){
+                input.setAttribute("value",'');
+                display=false;
+            }
+            if (equality && operation==undefined){
+                num1=undefined;
+                equality=false;
+            }
             interact(input,key);
         }
         switch (key){
@@ -153,6 +171,38 @@ window.onload = () => {
                         break;
                         }
                 break;
+            case "+":
+                switch(valueOnscreen){
+                    case null: 
+                    case "":
+                        break;
+                    default:
+                        if(operation===undefined){
+                            if(valueOnscreen.indexOf('.')){
+                                num1=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num1=parseint(valueOnscreen);
+                            }
+                            operation="add";
+                            input.setAttribute("value","");
+                        }
+                        else{
+                            display=true;
+                            if(valueOnscreen.indexOf('.')){
+                                num2=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num2=parseint(valueOnscreen);
+                            }
+                            num1=op(num1,num2,operation);
+                            num2=undefined;
+                            operation="add"
+                            input.setAttribute("value",num1);
+                        }
+                        break;      
+                }
+                break;
             case "-":
                 switch(valueOnscreen){
                     case null:
@@ -163,14 +213,140 @@ window.onload = () => {
                             input.setAttribute("value",'');
                         break;
                     default:
-
+                        if(operation===undefined){
+                            if(valueOnscreen.indexOf('.')){
+                                num1=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num1=parseint(valueOnscreen);
+                            }
+                            operation="subtract";
+                            input.setAttribute("value","");
+                        }
+                        else{
+                            display=true;
+                            if(valueOnscreen.indexOf('.')){
+                                num2=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num2=parseint(valueOnscreen);
+                            }
+                            num1=op(num1,num2,operation);
+                            num2=undefined;
+                            operation="subtract"
+                            input.setAttribute("value",num1);
+                        }   
                         break;
             
                 }
+                break;
+            case "*":
+                switch(valueOnscreen){
+                    case null: 
+                    case "":
+                        break;
+                    default:
+                        if(operation===undefined){
+                            if(valueOnscreen.indexOf('.')){
+                                num1=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num1=parseint(valueOnscreen);
+                            }
+                            operation="multiply";
+                            input.setAttribute("value","");
+                        }
+                        else{
+                            display=true;
+                            if(valueOnscreen.indexOf('.')){
+                                num2=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num2=parseint(valueOnscreen);
+                            }
+                            num1=op(num1,num2,operation);
+                            num2=undefined;
+                            operation="multiply"
+                            input.setAttribute("value",num1);
+                        }
+                        break;      
+                }
+                break;
+            case "/":
+                switch(valueOnscreen){
+                    case null: 
+                    case "":
+                        break;
+                    default:
+                        if(operation===undefined){
+                            if(valueOnscreen.indexOf('.')){
+                                num1=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num1=parseint(valueOnscreen);
+                            }
+                            operation="divide";
+                            input.setAttribute("value","");
+                        }
+                        else{
+                            display=true;
+                            if(valueOnscreen.indexOf('.')){
+                                num2=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num2=parseint(valueOnscreen);
+                            }
+                            num1=op(num1,num2,operation);
+                            num2=undefined;
+                            operation="divide"
+                            input.setAttribute("value",num1);
+                        }
+                        break;      
+                }
+                break;
+            case "Enter":
+                switch(valueOnscreen){
+                    case null: 
+                    case "":
+                        break;
+                    default:
+                        if (num1==undefined){
+                            display=true;
+                            if(valueOnscreen.indexOf('.')){
+                                num1=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num1=parseint(valueOnscreen);
+                            }
+                        }
+                        else if(num1 && display){
+                            input.setAttribute("value",num1);
+                        }
+                        else if(num1===0 && display){
+                            input.setAttribute("value",num1);
+                        }
+                        else{
+                            display=true;
+                            if(valueOnscreen.indexOf('.')){
+                                num2=parseFloat(valueOnscreen);
+                            }
+                            else{
+                                num2=parseint(valueOnscreen);
+                            }
+                            num1=op(num1,num2,operation);
+                            num2=undefined;
+                        }
+                        equality=true
+                        input.setAttribute("value",num1);
+                        operation=undefined;
+                        break;
+                }
+                break;
 
         }
     });
     clearAll.addEventListener('click',()=>{
+        operation=undefined;
         input.setAttribute("value","");
     });
     clear.addEventListener("click",()=>{
@@ -218,10 +394,10 @@ window.onload = () => {
                         num1=parseint(valueOnscreen);
                     }
                     operation="add";
-                    console.log(num1);
                     input.setAttribute("value","");
                 }
                 else{
+                    display=true;
                     if(valueOnscreen.indexOf('.')){
                         num2=parseFloat(valueOnscreen);
                     }
@@ -230,13 +406,158 @@ window.onload = () => {
                     }
                     num1=op(num1,num2,operation);
                     num2=undefined;
-                    console.log(num1);
                     operation="add"
-                    input.setAttribute("value","");
+                    input.setAttribute("value",num1);
                 }
                 break;      
         }
     })
+    minus.addEventListener(
+        'click',()=>{
+            let valueOnscreen=input.getAttribute("value");
+            switch(valueOnscreen){
+                case null: 
+                case "":
+                    break;
+                default:
+                    if(operation===undefined){
+                        if(valueOnscreen.indexOf('.')){
+                            num1=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num1=parseint(valueOnscreen);
+                        }
+                        operation="subtract";
+                        input.setAttribute("value","");
+                    }
+                    else{
+                        display=true;
+                        if(valueOnscreen.indexOf('.')){
+                            num2=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num2=parseint(valueOnscreen);
+                        }
+                        num1=op(num1,num2,operation);
+                        num2=undefined;
+                        operation="subtract"
+                        input.setAttribute("value",num1);
+                    }
+                    break;      
+            }   
+        }
+    )
+    times.addEventListener(
+        'click',()=>{
+            let valueOnscreen=input.getAttribute("value");
+            switch(valueOnscreen){
+                case null: 
+                case "":
+                    break;
+                default:
+                    if(operation===undefined){
+                        if(valueOnscreen.indexOf('.')){
+                            num1=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num1=parseint(valueOnscreen);
+                        }
+                        operation="multiply";
+                        input.setAttribute("value","");
+                    }
+                    else{
+                        display=true;
+                        if(valueOnscreen.indexOf('.')){
+                            num2=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num2=parseint(valueOnscreen);
+                        }
+                        num1=op(num1,num2,operation);
+                        num2=undefined;
+                        operation="multiply"
+                        input.setAttribute("value",num1);
+                    }
+                    break;      
+            }   
+        }
+    )
+    divideBy.addEventListener(
+        'click',()=>{
+            let valueOnscreen=input.getAttribute("value");
+            switch(valueOnscreen){
+                case null: 
+                case "":
+                    break;
+                default:
+                    if(operation===undefined){
+                        if(valueOnscreen.indexOf('.')){
+                            num1=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num1=parseint(valueOnscreen);
+                        }
+                        operation="divide";
+                        input.setAttribute("value","");
+                    }
+                    else{
+                        display=true;
+                        if(valueOnscreen.indexOf('.')){
+                            num2=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num2=parseint(valueOnscreen);
+                        }
+                        num1=op(num1,num2,operation);
+                        num2=undefined;
+                        operation="divide"
+                        input.setAttribute("value",num1);
+                    }
+                    break;      
+            }   
+        }
+    )
+    equal.addEventListener(
+        'click',()=>{
+            let valueOnscreen=input.getAttribute("value");
+            switch(valueOnscreen){
+                case null: 
+                case "":
+                    break;
+                default:
+                    if (num1==undefined){
+                        display=true;
+                        if(valueOnscreen.indexOf('.')){
+                            num1=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num1=parseint(valueOnscreen);
+                        }
+                    }
+                    else if(num1 && display){
+                        input.setAttribute("value",num1);
+                    }
+                    else if(num1===0 && display){
+                        input.setAttribute("value",num1);
+                    }
+                    else{
+                        display=true;
+                        if(valueOnscreen.indexOf('.')){
+                            num2=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num2=parseint(valueOnscreen);
+                        }
+                        num1=op(num1,num2,operation);
+                        num2=undefined;
+                    }
+                    equality=true
+                    input.setAttribute("value",num1);
+                    operation=undefined;
+                    break;
+            }
+        }
+    )
     };
 
 
