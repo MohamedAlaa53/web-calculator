@@ -156,8 +156,13 @@ window.onload = () => {
         }
         switch (key){
             case "Backspace":
-                    valueOnscreen=valueOnscreen.slice(0,-1);
-                    input.setAttribute("value",valueOnscreen);
+                    if (valueOnscreen==="undefined" ||valueOnscreen==="infinity" ||valueOnscreen==="NAN"){
+                        input.setAttribute("value","");
+                    }
+                    else{
+                        valueOnscreen=valueOnscreen.slice(0,-1);
+                        input.setAttribute("value",valueOnscreen);
+                    }
                 break;
             case ".":
                     switch(valueOnscreen){
@@ -351,8 +356,13 @@ window.onload = () => {
     });
     clear.addEventListener("click",()=>{
         let valueOnscreen=input.getAttribute("value");
-        valueOnscreen=valueOnscreen.slice(0,-1);
-        input.setAttribute("value",valueOnscreen);
+        if (valueOnscreen==="undefined" ||valueOnscreen==="infinity" ||valueOnscreen==="NAN"){
+            input.setAttribute("value","");
+        }
+        else{
+            valueOnscreen=valueOnscreen.slice(0,-1);
+            input.setAttribute("value",valueOnscreen);
+        }
     })
     point.addEventListener('click',()=>{
         let valueOnscreen=input.getAttribute("value");
