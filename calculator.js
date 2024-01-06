@@ -141,6 +141,9 @@ window.onload = () => {
                         num1=undefined;
                         equality=false;
                     }
+                    if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
+                        num1=undefined;
+                    }
                     interact(input,number.innerHTML);
                 }
             }  
@@ -152,6 +155,9 @@ window.onload = () => {
                 if (equality && operation==undefined){
                     num1=undefined;
                     equality=false;
+                }
+                if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
+                    num1=undefined;
                 }
                 interact(input,number.innerHTML);
             }
@@ -172,6 +178,9 @@ window.onload = () => {
                         num1=undefined;
                         equality=false;
                     }
+                    if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
+                        num1=undefined;
+                    }
                     interact(input,key);
                 }
             }  
@@ -184,12 +193,15 @@ window.onload = () => {
                     num1=undefined;
                     equality=false;
                 }
+                if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
+                    num1=undefined;
+                }
                 interact(input,key);
             }
         }
         switch (key){
             case "Backspace":
-                    if (valueOnscreen==="undefined" ||valueOnscreen==="infinity" ||valueOnscreen==="NAN"){
+                    if (valueOnscreen==="undefined" ||valueOnscreen==="Infinity" ||valueOnscreen==="NaN"){
                         input.setAttribute("value","");
                     }
                     else{
@@ -389,7 +401,7 @@ window.onload = () => {
     });
     clear.addEventListener("click",()=>{
         let valueOnscreen=input.getAttribute("value");
-        if (valueOnscreen==="undefined" ||valueOnscreen==="infinity" ||valueOnscreen==="NAN"){
+        if (valueOnscreen==="undefined" ||valueOnscreen==="Infinity" ||valueOnscreen==="NaN"){
             input.setAttribute("value","");
         }
         else{
