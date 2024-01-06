@@ -66,6 +66,12 @@ window.onload = () => {
     var operation;
     var display=false;
     var equality=false;
+    // body background
+    var lightBackground="hsla(175, 82%, 90%,0.6)";
+    var darkBackground="hsla(224, 38%, 60%,1)";
+    //setting default body background
+    let body=document.getElementsByTagName("body")[0];
+    body.setAttribute("style",`background-color: ${lightBackground};`);
     //defining items
     let buttons=[];
     let rows=[];
@@ -84,7 +90,7 @@ window.onload = () => {
         let btn=button(`${i}`,"col-2","calcbtn numbers");
         buttons.push(btn);
     }
-    for(let i =1; i<=5; i++){
+    for(let i =1; i<=6; i++){
         let row= element("div");
         attrib(row,"class","row");
         rows.push(row);
@@ -96,32 +102,35 @@ window.onload = () => {
     const point=button('.',"col-2","calcbtn");
     const sign=button('+<br>-<br>',"col-2","calcbtn");
     const equal=button("=","col-6","equalbtn");
+    const mode=button("Dark mode","col-12","modebtn");
     //appending items
     inputDiv.append(input);
     rows[0].append(inputDiv);
-    rows[1].append(buttons[1]);
-    rows[1].append(buttons[2]);
-    rows[1].append(buttons[3]);
-    rows[1].append(clearAll);
-    rows[1].append(clear);
-    rows[2].append(buttons[4]);
-    rows[2].append(buttons[5]);
-    rows[2].append(buttons[6]);
-    rows[2].append(add);
-    rows[2].append(times);
-    rows[3].append(buttons[7]);
-    rows[3].append(buttons[8]);
-    rows[3].append(buttons[9]);
-    rows[3].append(minus);
-    rows[3].append(divideBy);
-    rows[4].append(point);
-    rows[4].append(buttons[0]);
-    rows[4].append(sign);
-    rows[4].append(equal);
+    rows[1].append(mode);
+    rows[2].append(buttons[1]);
+    rows[2].append(buttons[2]);
+    rows[2].append(buttons[3]);
+    rows[2].append(clearAll);
+    rows[2].append(clear);
+    rows[3].append(buttons[4]);
+    rows[3].append(buttons[5]);
+    rows[3].append(buttons[6]);
+    rows[3].append(add);
+    rows[3].append(times);
+    rows[4].append(buttons[7]);
+    rows[4].append(buttons[8]);
+    rows[4].append(buttons[9]);
+    rows[4].append(minus);
+    rows[4].append(divideBy);
+    rows[5].append(point);
+    rows[5].append(buttons[0]);
+    rows[5].append(sign);
+    rows[5].append(equal);
     for (row of rows){
         maindev.append(row);
     }
     document.body.append(maindev);
+
     //listeners
     let numbers=document.getElementsByClassName("numbers");
     let arr=[];
@@ -613,6 +622,21 @@ window.onload = () => {
             }
         }
     )
+    mode.addEventListener("click",()=>{
+        let modeBtn=document.getElementsByClassName("modebtn")[0];
+        let body=document.getElementsByTagName("body")[0];
+        switch(modeBtn.innerHTML){
+            case "Dark mode":
+                body.setAttribute("style",`background-color: ${darkBackground};`)
+                modeBtn.innerHTML="Light mode";
+                break;
+            case "Light mode":
+                body.setAttribute("style",`background-color: ${lightBackground};`)
+                modeBtn.innerHTML="Dark mode";
+                break;
+                
+        }
+    })
     };
 
 
