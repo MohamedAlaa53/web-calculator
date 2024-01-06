@@ -73,6 +73,7 @@ window.onload = () => {
     const inputDiv=element("div");
     attrib(inputDiv,"class","col border");
     attrib(input,"class","screen");
+    attrib(input,"type","text")
     const clearAll=button("AC","col-3 d-flex align-items-center","clear");
     attrib(clearAll,"id","clearAll");
     const clear=button("C","col-3 d-flex align-items-center","clear");
@@ -129,30 +130,62 @@ window.onload = () => {
     }
     for (let number of numbers){
         number.addEventListener("click",()=>{
-            if (display){
-                input.setAttribute("value",'');
-                display=false;
+            let valueOnscreen=input.getAttribute("value");
+            try{
+                if(valueOnscreen.length<=30){
+                    if (display){
+                        input.setAttribute("value",'');
+                        display=false;
+                    }
+                    if (equality && operation==undefined){
+                        num1=undefined;
+                        equality=false;
+                    }
+                    interact(input,number.innerHTML);
+                }
+            }  
+            catch{
+                if (display){
+                    input.setAttribute("value",'');
+                    display=false;
+                }
+                if (equality && operation==undefined){
+                    num1=undefined;
+                    equality=false;
+                }
+                interact(input,number.innerHTML);
             }
-            if (equality && operation==undefined){
-                num1=undefined;
-                equality=false;
-            }
-            interact(input,number.innerHTML);
+                
         });
     }
     document.addEventListener("keydown",()=>{
         let key=event.key;
         let valueOnscreen=input.getAttribute("value");
         if(arr.indexOf(key)>=0){
-            if (display){
-                input.setAttribute("value",'');
-                display=false;
+            try{
+                if(valueOnscreen.length<=30){
+                    if (display){
+                        input.setAttribute("value",'');
+                        display=false;
+                    }
+                    if (equality && operation==undefined){
+                        num1=undefined;
+                        equality=false;
+                    }
+                    interact(input,key);
+                }
+            }  
+            catch{
+                if (display){
+                    input.setAttribute("value",'');
+                    display=false;
+                }
+                if (equality && operation==undefined){
+                    num1=undefined;
+                    equality=false;
+                }
+                interact(input,key);
             }
-            if (equality && operation==undefined){
-                num1=undefined;
-                equality=false;
-            }
-            interact(input,key);
         }
         switch (key){
             case "Backspace":
