@@ -43,7 +43,6 @@
     }
 }
 body {
-    margin: 0; /* Remove default margin */
     height: 100vh; /* Set body height to the full viewport height */
     display: flex;
     align-items: center; /* Center vertically */
