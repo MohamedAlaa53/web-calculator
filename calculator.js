@@ -60,15 +60,16 @@ function op(a,b,operation){
     return result;
 }
 window.onload = () => {
-    //values
-    var num1;
-    var num2;
-    var operation;
-    var display=false;
-    var equality=false;
+    //letiables
+    let num1;
+    let num2;
+    let operation;
+    let display=false;
+    let equality=false;
+    let characters=23;//screen characters
     // body background
-    var lightBackground="hsla(175, 82%, 90%,0.6)";
-    var darkBackground="hsla(224, 38%, 60%,1)";
+    let lightBackground="hsla(175, 82%, 90%,0.6)";
+    let darkBackground="hsla(224, 38%, 60%,1)";
     //setting default body background
     let body=document.getElementsByTagName("body")[0];
     body.setAttribute("style",`background-color: ${lightBackground};`);
@@ -141,7 +142,7 @@ window.onload = () => {
         number.addEventListener("click",()=>{
             let valueOnscreen=input.getAttribute("value");
             try{
-                if(valueOnscreen.length<=30){
+                if(valueOnscreen.length<=characters){
                     if (display){
                         input.setAttribute("value",'');
                         display=false;
@@ -178,7 +179,7 @@ window.onload = () => {
         let valueOnscreen=input.getAttribute("value");
         if(arr.indexOf(key)>=0){
             try{
-                if(valueOnscreen.length<=30){
+                if(valueOnscreen.length<=characters){
                     if (display){
                         input.setAttribute("value",'');
                         display=false;
