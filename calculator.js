@@ -70,9 +70,20 @@ window.onload = () => {
     // body background
     let lightBackground="hsla(175, 82%, 90%,0.6)";
     let darkBackground="hsla(224, 38%, 60%,1)";
+
+    //restroring previous mode
+    if(localStorage.getItem("mode")=="dark"){
+        btnMode="Light mode";
+    }
+    else{
+        btnMode="Dark mode";
+    }
+
     //setting default body background
     let body=document.getElementsByTagName("body")[0];
-    body.setAttribute("style",`background-color: ${lightBackground};`);
+    let bg= btnMode=="Dark mode"? lightBackground :darkBackground;
+    body.setAttribute("style",`background-color: ${bg};`);
+
     //defining items
     let buttons=[];
     let rows=[];
@@ -86,7 +97,7 @@ window.onload = () => {
     const clear=button("C","col-3 d-flex align-items-center","clear");
     attrib(clear,"id","clear");
     let maindev=element("div");
-    attrib(maindev,"class","box")
+    attrib(maindev,"class","lightmode_box")
     for(let i =0; i<=9; i++){
         let btn=button(`${i}`,"col-2","calcbtn numbers");
         buttons.push(btn);
@@ -103,7 +114,7 @@ window.onload = () => {
     const point=button('.',"col-2","calcbtn");
     const sign=button('+<br>-<br>',"col-2","calcbtn");
     const equal=button("=","col-6","equalbtn");
-    const mode=button("Dark mode","col-12","modebtn");
+    const mode=button(btnMode,"col-12","modebtn");
     //appending items
     inputDiv.append(input);
     rows[0].append(inputDiv);
@@ -131,6 +142,15 @@ window.onload = () => {
         maindev.append(row);
     }
     document.body.append(maindev);
+
+    //setting previous mode
+    let btns=document.getElementsByTagName("button");
+    if (btnMode=="Light mode"){
+        maindev.setAttribute("class","darkmode_box");
+        for(btn of btns){
+            btn.classList.add("darkbtn");
+        }
+    }
 
     //listeners
     let numbers=document.getElementsByClassName("numbers");
@@ -626,14 +646,25 @@ window.onload = () => {
     mode.addEventListener("click",()=>{
         let modeBtn=document.getElementsByClassName("modebtn")[0];
         let body=document.getElementsByTagName("body")[0];
+        let btns=document.getElementsByTagName("button");
         switch(modeBtn.innerHTML){
             case "Dark mode":
                 body.setAttribute("style",`background-color: ${darkBackground};`)
                 modeBtn.innerHTML="Light mode";
+                maindev.setAttribute("class","darkmode_box");
+                for(btn of btns){
+                    btn.classList.add("darkbtn");
+                }
+                localStorage.setItem("mode","dark");
                 break;
             case "Light mode":
                 body.setAttribute("style",`background-color: ${lightBackground};`)
                 modeBtn.innerHTML="Dark mode";
+                maindev.setAttribute("class","lightmode_box");
+                for(btn of btns){
+                    btn.classList.remove("darkbtn")
+                }
+                localStorage.setItem("mode","light")
                 break;
                 
         }
