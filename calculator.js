@@ -269,7 +269,7 @@ window.onload = () => {
                     if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
                         num1=undefined;
                     }
-                    arr[key].click()
+                    arr[key].click();
                 }
             }  
             catch{
@@ -284,7 +284,7 @@ window.onload = () => {
                 if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
                     num1=undefined;
                 }
-                arr[key].click()
+                arr[key].click();
             }
         }
         switch (key){
