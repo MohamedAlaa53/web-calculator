@@ -59,6 +59,63 @@ function op(a,b,operation){
     }
     return result;
 }
+function switchOp(operationSign){
+    let operation;
+    switch(operationSign){
+        case "+":
+            operation="add";
+        break;
+        case "-":
+            operation="subtract";
+        break;
+        case "*":
+            operation="multiply";
+        break;
+        case "/":
+            operation="divide";
+        break;
+    }
+    return operation;
+}
+function arith(operationSign,input,operation,num1,num2){
+    let valueOnscreen=input.getAttribute("value");
+    let display;
+            switch(valueOnscreen){
+                case null: 
+                case "":
+                break;
+                default:
+                    if(operation===undefined){
+                        if(valueOnscreen.indexOf('.')){
+                            num1=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num1=parseint(valueOnscreen);
+                        }
+                        operation=switchOp(operationSign);
+                        input.setAttribute("value","");
+                    }
+                    else{
+                        display=true;
+                        if(valueOnscreen.indexOf('.')){
+                            num2=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num2=parseint(valueOnscreen);
+                        }
+                        num1=op(num1,num2,operation);
+                        num2=undefined;
+                        operation=switchOp(operationSign);
+                        input.setAttribute("value",num1);
+                    }
+                break;
+            }
+        return {
+            operation:operation,
+            num1:num1,
+            display:display
+        }
+     }
 window.onload = () => {
     //letiables
     let num1;
@@ -115,6 +172,7 @@ window.onload = () => {
     const sign=button('+<br>-<br>',"col-2","calcbtn");
     const equal=button("=","col-6","equalbtn");
     const mode=button(btnMode,"col-12","modebtn");
+
     //appending items
     inputDiv.append(input);
     rows[0].append(inputDiv);
@@ -257,29 +315,10 @@ window.onload = () => {
                     case "":
                         break;
                     default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="add";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="add"
-                            input.setAttribute("value",num1);
-                        }
+                        let calc=arith("+",input,operation,num1,num2);
+                        operation=calc.operation;
+                        num1=calc.num1;
+                        display=calc.display;
                         break;      
                 }
                 break;
@@ -293,29 +332,10 @@ window.onload = () => {
                             input.setAttribute("value",'');
                         break;
                     default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="subtract";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="subtract"
-                            input.setAttribute("value",num1);
-                        }   
+                        let calc=arith("-",input,operation,num1,num2);
+                        operation=calc.operation;
+                        num1=calc.num1;
+                        display=calc.display;
                         break;
             
                 }
@@ -326,29 +346,10 @@ window.onload = () => {
                     case "":
                         break;
                     default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="multiply";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="multiply"
-                            input.setAttribute("value",num1);
-                        }
+                        let calc=arith("*",input,operation,num1,num2);
+                        operation=calc.operation;
+                        num1=calc.num1;
+                        display=calc.display;
                         break;      
                 }
                 break;
@@ -358,29 +359,10 @@ window.onload = () => {
                     case "":
                         break;
                     default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="divide";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="divide"
-                            input.setAttribute("value",num1);
-                        }
+                        let calc=arith("/",input,operation,num1,num2);
+                        operation=calc.operation;
+                        num1=calc.num1;
+                        display=calc.display;
                         break;      
                 }
                 break;
@@ -471,29 +453,10 @@ window.onload = () => {
             case "":
                 break;
             default:
-                if(operation===undefined){
-                    if(valueOnscreen.indexOf('.')){
-                        num1=parseFloat(valueOnscreen);
-                    }
-                    else{
-                        num1=parseint(valueOnscreen);
-                    }
-                    operation="add";
-                    input.setAttribute("value","");
-                }
-                else{
-                    display=true;
-                    if(valueOnscreen.indexOf('.')){
-                        num2=parseFloat(valueOnscreen);
-                    }
-                    else{
-                        num2=parseint(valueOnscreen);
-                    }
-                    num1=op(num1,num2,operation);
-                    num2=undefined;
-                    operation="add"
-                    input.setAttribute("value",num1);
-                }
+                let calc=arith("+",input,operation,num1,num2);
+                operation=calc.operation;
+                num1=calc.num1;
+                display=calc.display;
                 break;      
         }
     })
@@ -505,29 +468,10 @@ window.onload = () => {
                 case "":
                     break;
                 default:
-                    if(operation===undefined){
-                        if(valueOnscreen.indexOf('.')){
-                            num1=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num1=parseint(valueOnscreen);
-                        }
-                        operation="subtract";
-                        input.setAttribute("value","");
-                    }
-                    else{
-                        display=true;
-                        if(valueOnscreen.indexOf('.')){
-                            num2=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num2=parseint(valueOnscreen);
-                        }
-                        num1=op(num1,num2,operation);
-                        num2=undefined;
-                        operation="subtract"
-                        input.setAttribute("value",num1);
-                    }
+                    let calc=arith("-",input,operation,num1,num2);
+                    operation=calc.operation;
+                    num1=calc.num1;
+                    display=calc.display;
                     break;      
             }   
         }
@@ -540,29 +484,10 @@ window.onload = () => {
                 case "":
                     break;
                 default:
-                    if(operation===undefined){
-                        if(valueOnscreen.indexOf('.')){
-                            num1=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num1=parseint(valueOnscreen);
-                        }
-                        operation="multiply";
-                        input.setAttribute("value","");
-                    }
-                    else{
-                        display=true;
-                        if(valueOnscreen.indexOf('.')){
-                            num2=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num2=parseint(valueOnscreen);
-                        }
-                        num1=op(num1,num2,operation);
-                        num2=undefined;
-                        operation="multiply"
-                        input.setAttribute("value",num1);
-                    }
+                    let calc=arith("*",input,operation,num1,num2);
+                    operation=calc.operation;
+                    num1=calc.num1;
+                    display=calc.display;
                     break;      
             }   
         }
@@ -575,30 +500,10 @@ window.onload = () => {
                 case "":
                     break;
                 default:
-                    if(operation===undefined){
-                        if(valueOnscreen.indexOf('.')){
-                            num1=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num1=parseint(valueOnscreen);
-                        }
-                        operation="divide";
-                        input.setAttribute("value","");
-                    }
-                    else{
-                        display=true;
-                        if(valueOnscreen.indexOf('.')){
-                            num2=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num2=parseint(valueOnscreen);
-                        }
-                        num1=op(num1,num2,operation);
-                        num2=undefined;
-                        operation="divide"
-                        input.setAttribute("value",num1);
-                    }
-                    break;      
+                    let calc=arith("/",input,operation,num1,num2);
+                    operation=calc.operation;
+                    num1=calc.num1;
+                    display=calc.display;
             }   
         }
     )
