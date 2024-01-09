@@ -36,6 +36,7 @@ function interact(elm,value){
 function button(value,colclass="col-2",btnclass){
     let column= element("div");
     let btn= element("button",value);
+    attrib(btn,"type","button");
     attrib(btn,"class",btnclass);
     column.append(btn);
     attrib(column,"class",colclass);
