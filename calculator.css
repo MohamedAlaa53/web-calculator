@@ -2,7 +2,7 @@
     border-radius: 80%;
     height: 4vh;
     width:100%;
-    
+    text-align: center;
 }
 .row{
     margin: 2vh;
@@ -11,11 +11,13 @@
     width: 100%;
     border-radius: 5px;
     height:8vh;
+    text-align: center;
 }
 .equalbtn{
     border-radius: 5px;
     width: 100%;
     height:8vh;
+    text-align: center;
 }
 .lightmode_box{
     border-radius: 40px;
@@ -43,7 +45,18 @@
         width:40%;
     }
 }
-@media (max-width:600px) {
+
+@media (max-width:980px) {
+    .lightmode_box{
+        width:60%;
+        padding: 6%;
+    }
+    .darkmode_box{
+        width:60%;
+        padding: 6%;
+    }
+}
+@media (max-width:450px) {
     .lightmode_box{
         width:90%;
         padding: 6%;
@@ -51,6 +64,20 @@
     .darkmode_box{
         width:90%;
         padding: 6%;
+    }
+}
+@media (max-width:280px) {
+    .lightmode_box{
+        width:100%;
+        padding: 6%;
+    }
+    .darkmode_box{
+        width:100%;
+        padding: 6%;
+    }
+    button{
+        padding:1%;
+        max-height: 80%;
     }
 }
 body {
@@ -89,6 +116,9 @@ button{
     box-shadow: 0px 0px 3px black;
     font-weight: bold;
     font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
 }
 .modebtn{
     border-radius: 8px;

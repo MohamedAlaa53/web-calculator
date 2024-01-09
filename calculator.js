@@ -59,6 +59,63 @@ function op(a,b,operation){
     }
     return result;
 }
+function switchOp(operationSign){
+    let operation;
+    switch(operationSign){
+        case "+":
+            operation="add";
+        break;
+        case "-":
+            operation="subtract";
+        break;
+        case "*":
+            operation="multiply";
+        break;
+        case "/":
+            operation="divide";
+        break;
+    }
+    return operation;
+}
+function arith(operationSign,input,operation,num1,num2){
+    let valueOnscreen=input.getAttribute("value");
+    let display;
+            switch(valueOnscreen){
+                case null: 
+                case "":
+                break;
+                default:
+                    if(operation===undefined){
+                        if(valueOnscreen.indexOf('.')){
+                            num1=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num1=parseint(valueOnscreen);
+                        }
+                        operation=switchOp(operationSign);
+                        input.setAttribute("value","");
+                    }
+                    else{
+                        display=true;
+                        if(valueOnscreen.indexOf('.')){
+                            num2=parseFloat(valueOnscreen);
+                        }
+                        else{
+                            num2=parseint(valueOnscreen);
+                        }
+                        num1=op(num1,num2,operation);
+                        num2=undefined;
+                        operation=switchOp(operationSign);
+                        input.setAttribute("value",num1);
+                    }
+                break;
+            }
+        return {
+            operation:operation,
+            num1:num1,
+            display:display
+        }
+     }
 window.onload = () => {
     //letiables
     let num1;
@@ -115,6 +172,7 @@ window.onload = () => {
     const sign=button('+<br>-<br>',"col-2","calcbtn");
     const equal=button("=","col-6","equalbtn");
     const mode=button(btnMode,"col-12","modebtn");
+
     //appending items
     inputDiv.append(input);
     rows[0].append(inputDiv);
@@ -154,11 +212,11 @@ window.onload = () => {
 
     //listeners
     let numbers=document.getElementsByClassName("numbers");
-    let arr=[];
+    let arr={};
     for(let number of numbers){
-        arr.push(number.innerHTML);
+        arr[number.innerHTML]=number;
     }
-    for (let number of numbers){
+    for (let number of Object.values(numbers)){
         number.addEventListener("click",()=>{
             let valueOnscreen=input.getAttribute("value");
             try{
@@ -197,7 +255,7 @@ window.onload = () => {
     document.addEventListener("keydown",()=>{
         let key=event.key;
         let valueOnscreen=input.getAttribute("value");
-        if(arr.indexOf(key)>=0){
+        if(Object.keys(arr).indexOf(key)>=0){
             try{
                 if(valueOnscreen.length<=characters){
                     if (display){
@@ -211,7 +269,7 @@ window.onload = () => {
                     if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
                         num1=undefined;
                     }
-                    interact(input,key);
+                    arr[key].click()
                 }
             }  
             catch{
@@ -226,201 +284,30 @@ window.onload = () => {
                 if (valueOnscreen==="Infinity" || valueOnscreen==="undefined" || valueOnscreen==="NaN"){
                     num1=undefined;
                 }
-                interact(input,key);
+                arr[key].click()
             }
         }
         switch (key){
             case "Backspace":
-                    if (valueOnscreen==="undefined" ||valueOnscreen==="Infinity" ||valueOnscreen==="NaN"){
-                        input.setAttribute("value","");
-                    }
-                    else{
-                        valueOnscreen=valueOnscreen.slice(0,-1);
-                        input.setAttribute("value",valueOnscreen);
-                    }
+                    clear.click();
                 break;
             case ".":
-                    switch(valueOnscreen){
-                        case null: 
-                        case "":
-                            break;
-                        default:
-                            if (valueOnscreen.indexOf('.')===-1){
-                                interact(input,'.');
-                            }
-                        break;
-                        }
+                point.click();
                 break;
             case "+":
-                switch(valueOnscreen){
-                    case null: 
-                    case "":
-                        break;
-                    default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="add";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="add"
-                            input.setAttribute("value",num1);
-                        }
-                        break;      
-                }
+                add.click();
                 break;
             case "-":
-                switch(valueOnscreen){
-                    case null:
-                    case "":
-                            input.setAttribute("value",'-');
-                        break;
-                    case "-":
-                            input.setAttribute("value",'');
-                        break;
-                    default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="subtract";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="subtract"
-                            input.setAttribute("value",num1);
-                        }   
-                        break;
-            
-                }
+                minus.click();
                 break;
             case "*":
-                switch(valueOnscreen){
-                    case null: 
-                    case "":
-                        break;
-                    default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="multiply";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="multiply"
-                            input.setAttribute("value",num1);
-                        }
-                        break;      
-                }
+                times.click()
                 break;
             case "/":
-                switch(valueOnscreen){
-                    case null: 
-                    case "":
-                        break;
-                    default:
-                        if(operation===undefined){
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                            operation="divide";
-                            input.setAttribute("value","");
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                            operation="divide"
-                            input.setAttribute("value",num1);
-                        }
-                        break;      
-                }
+                divideBy.click()
                 break;
             case "Enter":
-                switch(valueOnscreen){
-                    case null: 
-                    case "":
-                        break;
-                    default:
-                        if (num1==undefined){
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num1=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num1=parseint(valueOnscreen);
-                            }
-                        }
-                        else if(num1 && display){
-                            input.setAttribute("value",num1);
-                        }
-                        else if(num1===0 && display){
-                            input.setAttribute("value",num1);
-                        }
-                        else{
-                            display=true;
-                            if(valueOnscreen.indexOf('.')){
-                                num2=parseFloat(valueOnscreen);
-                            }
-                            else{
-                                num2=parseint(valueOnscreen);
-                            }
-                            num1=op(num1,num2,operation);
-                            num2=undefined;
-                        }
-                        equality=true
-                        input.setAttribute("value",num1);
-                        operation=undefined;
-                        break;
-                }
+                equal.click()
                 break;
 
         }
@@ -471,29 +358,10 @@ window.onload = () => {
             case "":
                 break;
             default:
-                if(operation===undefined){
-                    if(valueOnscreen.indexOf('.')){
-                        num1=parseFloat(valueOnscreen);
-                    }
-                    else{
-                        num1=parseint(valueOnscreen);
-                    }
-                    operation="add";
-                    input.setAttribute("value","");
-                }
-                else{
-                    display=true;
-                    if(valueOnscreen.indexOf('.')){
-                        num2=parseFloat(valueOnscreen);
-                    }
-                    else{
-                        num2=parseint(valueOnscreen);
-                    }
-                    num1=op(num1,num2,operation);
-                    num2=undefined;
-                    operation="add"
-                    input.setAttribute("value",num1);
-                }
+                let calc=arith("+",input,operation,num1,num2);
+                operation=calc.operation;
+                num1=calc.num1;
+                display=calc.display;
                 break;      
         }
     })
@@ -501,33 +369,18 @@ window.onload = () => {
         'click',()=>{
             let valueOnscreen=input.getAttribute("value");
             switch(valueOnscreen){
-                case null: 
+                case null:
                 case "":
+                        input.setAttribute("value",'-');
+                    break;
+                case "-":
+                        input.setAttribute("value",'');
                     break;
                 default:
-                    if(operation===undefined){
-                        if(valueOnscreen.indexOf('.')){
-                            num1=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num1=parseint(valueOnscreen);
-                        }
-                        operation="subtract";
-                        input.setAttribute("value","");
-                    }
-                    else{
-                        display=true;
-                        if(valueOnscreen.indexOf('.')){
-                            num2=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num2=parseint(valueOnscreen);
-                        }
-                        num1=op(num1,num2,operation);
-                        num2=undefined;
-                        operation="subtract"
-                        input.setAttribute("value",num1);
-                    }
+                    let calc=arith("-",input,operation,num1,num2);
+                    operation=calc.operation;
+                    num1=calc.num1;
+                    display=calc.display;
                     break;      
             }   
         }
@@ -540,29 +393,10 @@ window.onload = () => {
                 case "":
                     break;
                 default:
-                    if(operation===undefined){
-                        if(valueOnscreen.indexOf('.')){
-                            num1=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num1=parseint(valueOnscreen);
-                        }
-                        operation="multiply";
-                        input.setAttribute("value","");
-                    }
-                    else{
-                        display=true;
-                        if(valueOnscreen.indexOf('.')){
-                            num2=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num2=parseint(valueOnscreen);
-                        }
-                        num1=op(num1,num2,operation);
-                        num2=undefined;
-                        operation="multiply"
-                        input.setAttribute("value",num1);
-                    }
+                    let calc=arith("*",input,operation,num1,num2);
+                    operation=calc.operation;
+                    num1=calc.num1;
+                    display=calc.display;
                     break;      
             }   
         }
@@ -575,30 +409,10 @@ window.onload = () => {
                 case "":
                     break;
                 default:
-                    if(operation===undefined){
-                        if(valueOnscreen.indexOf('.')){
-                            num1=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num1=parseint(valueOnscreen);
-                        }
-                        operation="divide";
-                        input.setAttribute("value","");
-                    }
-                    else{
-                        display=true;
-                        if(valueOnscreen.indexOf('.')){
-                            num2=parseFloat(valueOnscreen);
-                        }
-                        else{
-                            num2=parseint(valueOnscreen);
-                        }
-                        num1=op(num1,num2,operation);
-                        num2=undefined;
-                        operation="divide"
-                        input.setAttribute("value",num1);
-                    }
-                    break;      
+                    let calc=arith("/",input,operation,num1,num2);
+                    operation=calc.operation;
+                    num1=calc.num1;
+                    display=calc.display;
             }   
         }
     )
