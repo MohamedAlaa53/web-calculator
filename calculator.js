@@ -117,8 +117,35 @@ function arith(operationSign,input,operation,num1,num2){
             display:display
         }
      }
+    function obj(elementType,rowN,divClass,elmClass,btnText=null,rows){
+        this.type=elementType;
+        this.row=rowN;
+        this.div=divClass;
+        this.elmClass=elmClass;
+        this.btn=btnText;
+        this.rows=rows;
+        this.create=()=>{
+            if (this.type=="input"){
+                this.elm=element(this.type);
+                this.container=element("div");
+                attrib(this.container,"class",this.div);
+                attrib(this.elm,"type","text");
+                attrib(this.elm,"readonly");
+                attrib(this.elm,"class",this.elmClass);
+                this.container.append(this.elm);
+                this.elm=this.container;
+            }
+            else{
+                this.elm=button(btnText,divClass,elmClass);
+            }
+            return this.elm;
+        };
+        this.deploy=()=>{
+            this.rows[this.row].append(this.elm);
+        };
+    }
 window.onload = () => {
-    //letiables
+    //variables
     let num1;
     let num2;
     let operation;
@@ -145,19 +172,22 @@ window.onload = () => {
     //defining items
     let buttons=[];
     let rows=[];
-    const input=element("input",null,true);
-    const inputDiv=element("div");
-    attrib(inputDiv,"class","col border");
-    attrib(input,"class","screen");
-    attrib(input,"type","text")
-    const clearAll=button("AC","col-3 d-flex align-items-center","clear");
-    attrib(clearAll,"id","clearAll");
-    const clear=button("C","col-3 d-flex align-items-center","clear");
-    attrib(clear,"id","clear");
     let maindev=element("div");
     attrib(maindev,"class","lightmode_box")
     for(let i =0; i<=9; i++){
-        let btn=button(`${i}`,"col-2","calcbtn numbers");
+        let btn;
+        if (i<=3 && i>=1){
+            btn=new obj("button",2,"col-2","calcbtn numbers",`${i}`,rows);
+        }
+        else if(i<=6 && i>=4){
+            btn=new obj("button",3,"col-2","calcbtn numbers",`${i}`,rows);
+        }
+        else if(i<=9 && i>=7){
+            btn=new obj("button",4,"col-2","calcbtn numbers",`${i}`,rows);
+        }
+        else{
+            btn=new obj("button",5,"col-2","calcbtn numbers",`${i}`,rows);
+        }
         buttons.push(btn);
     }
     for(let i =1; i<=6; i++){
@@ -165,38 +195,45 @@ window.onload = () => {
         attrib(row,"class","row");
         rows.push(row);
     }
-    const add=button("+","col-3","calcbtn");
-    const minus=button("-","col-3","calcbtn")
-    const times=button("x","col-3","calcbtn");
-    const divideBy=button("÷","col-3","calcbtn");
-    const point=button('.',"col-2","calcbtn");
-    const sign=button('+<br>-<br>',"col-2","calcbtn");
-    const equal=button("=","col-6","equalbtn");
-    const mode=button(btnMode,"col-12","modebtn");
-
-    //appending items
-    inputDiv.append(input);
-    rows[0].append(inputDiv);
-    rows[1].append(mode);
-    rows[2].append(buttons[1]);
-    rows[2].append(buttons[2]);
-    rows[2].append(buttons[3]);
-    rows[2].append(clearAll);
-    rows[2].append(clear);
-    rows[3].append(buttons[4]);
-    rows[3].append(buttons[5]);
-    rows[3].append(buttons[6]);
-    rows[3].append(add);
-    rows[3].append(times);
-    rows[4].append(buttons[7]);
-    rows[4].append(buttons[8]);
-    rows[4].append(buttons[9]);
-    rows[4].append(minus);
-    rows[4].append(divideBy);
-    rows[5].append(point);
-    rows[5].append(buttons[0]);
-    rows[5].append(sign);
-    rows[5].append(equal);
+    const add=new obj("button",3,"col-3","calcbtn","+",rows);
+    const minus=new obj("button",4,"col-3","calcbtn","-",rows);
+    const times=new obj("button",3,"col-3","calcbtn","*",rows);
+    const divideBy=new obj("button",4,"col-3","calcbtn","/",rows);
+    const point=new obj("button",5,"col-2","calcbtn",".",rows);
+    const sign=new obj("button",5,"col-2","calcbtn",'+<br>-<br>',rows);
+    const equal=new obj("button",5,"col-6","equalbtn","=",rows);
+    const mode=new obj("button",1,"col-12","modebtn",btnMode,rows);
+    const clearAll=new obj("button",2,"col-3 d-flex align-items-center","clear","AC",rows);
+    const clear=new obj("button",2,"col-3 d-flex align-items-center","clear","C",rows);
+    const inputObject=new obj("input",0,"col border","screen",null,rows);
+    //deploying items
+    objs=[
+        inputObject,
+        mode,
+        buttons[1],
+        buttons[2],
+        buttons[3],
+        clearAll,
+        clear,
+        buttons[4],
+        buttons[5],
+        buttons[6],
+        add,
+        times,
+        buttons[7],
+        buttons[8],
+        buttons[9],
+        minus,
+        divideBy,
+        point,
+        buttons[0],
+        sign,
+        equal
+    ];
+    for(objct of objs){
+        objct.create();
+        objct.deploy();
+    }
     for (row of rows){
         maindev.append(row);
     }
@@ -213,6 +250,7 @@ window.onload = () => {
 
     //listeners
     let numbers=document.getElementsByClassName("numbers");
+    let input=document.getElementsByClassName("screen")[0];
     let arr={};
     for(let number of numbers){
         arr[number.innerHTML]=number;
@@ -290,34 +328,34 @@ window.onload = () => {
         }
         switch (key){
             case "Backspace":
-                    clear.click();
+                clear.elm.click();
                 break;
             case ".":
-                point.click();
+                point.elm.click();
                 break;
             case "+":
-                add.click();
+                add.elm.click();
                 break;
             case "-":
-                minus.click();
+                minus.elm.click();
                 break;
             case "*":
-                times.click()
+                times.elm.click()
                 break;
             case "/":
-                divideBy.click()
+                divideBy.elm.click()
                 break;
             case "Enter":
-                equal.click()
+                equal.elm.click()
                 break;
 
         }
     });
-    clearAll.addEventListener('click',()=>{
+    clearAll.elm.addEventListener('click',()=>{
         operation=undefined;
         input.setAttribute("value","");
     });
-    clear.addEventListener("click",()=>{
+    clear.elm.addEventListener("click",()=>{
         let valueOnscreen=input.getAttribute("value");
         if (valueOnscreen==="undefined" ||valueOnscreen==="Infinity" ||valueOnscreen==="NaN"){
             input.setAttribute("value","");
@@ -327,7 +365,7 @@ window.onload = () => {
             input.setAttribute("value",valueOnscreen);
         }
     })
-    point.addEventListener('click',()=>{
+    point.elm.addEventListener('click',()=>{
         let valueOnscreen=input.getAttribute("value");
         switch(valueOnscreen){
             case null: 
@@ -340,7 +378,7 @@ window.onload = () => {
                     break;
         }
     })
-    sign.addEventListener('click',()=>{
+    sign.elm.addEventListener('click',()=>{
         let valueOnscreen=input.getAttribute("value");
         switch(valueOnscreen){
             case null: 
@@ -352,7 +390,7 @@ window.onload = () => {
                 break;      
         }
     })
-    add.addEventListener('click',()=>{
+    add.elm.addEventListener('click',()=>{
         let valueOnscreen=input.getAttribute("value");
         switch(valueOnscreen){
             case null: 
@@ -366,7 +404,7 @@ window.onload = () => {
                 break;      
         }
     })
-    minus.addEventListener(
+    minus.elm.addEventListener(
         'click',()=>{
             let valueOnscreen=input.getAttribute("value");
             switch(valueOnscreen){
@@ -386,7 +424,7 @@ window.onload = () => {
             }   
         }
     )
-    times.addEventListener(
+    times.elm.addEventListener(
         'click',()=>{
             let valueOnscreen=input.getAttribute("value");
             switch(valueOnscreen){
@@ -402,7 +440,7 @@ window.onload = () => {
             }   
         }
     )
-    divideBy.addEventListener(
+    divideBy.elm.addEventListener(
         'click',()=>{
             let valueOnscreen=input.getAttribute("value");
             switch(valueOnscreen){
@@ -417,7 +455,7 @@ window.onload = () => {
             }   
         }
     )
-    equal.addEventListener(
+    equal.elm.addEventListener(
         'click',()=>{
             let valueOnscreen=input.getAttribute("value");
             switch(valueOnscreen){
@@ -458,7 +496,7 @@ window.onload = () => {
             }
         }
     )
-    mode.addEventListener("click",()=>{
+    mode.elm.addEventListener("click",()=>{
         let modeBtn=document.getElementsByClassName("modebtn")[0];
         let body=document.getElementsByTagName("body")[0];
         let btns=document.getElementsByTagName("button");
